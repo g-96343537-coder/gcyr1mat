@@ -1,321 +1,244 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>一年级数学加减法练习题</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', 'Microsoft YaHei', sans-serif;
-        }
-        body {
-            background: linear-gradient(135deg, #a6c0fe 0%, #f68084 100%);
-            margin: 0;
-            padding: 20px;
-            color: #333;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.92);
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            padding: 30px;
-            border: 8px solid #ffcc00;
-            position: relative;
-            overflow: hidden;
-        }
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 15px;
-            background: repeating-linear-gradient(
-                45deg,
-                #ff6b6b,
-                #ff6b6b 10px,
-                #4ecdc4 10px,
-                #4ecdc4 20px,
-                #45b7d1 20px,
-                #45b7d1 30px,
-                #96ceb4 30px,
-                #96ceb4 40px
-            );
-        }
-        h1 {
-            text-align: center;
-            color: #e74c3c;
-            margin-bottom: 30px;
-            font-size: 32px;
-            text-shadow: 2px 2px 0 #ffcc00;
-            background: linear-gradient(to right, #e74c3c, #3498db);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            padding: 10px;
-            border-radius: 15px;
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .page {
-            display: none;
-        }
-        .page.active {
-            display: block;
-        }
-        .question {
-            background-color: #f9f9f9;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border-left: 8px solid #3498db;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .question:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-        }
-        .question:nth-child(odd) {
-            border-left-color: #e74c3c;
-            background: linear-gradient(to right, #fff9f9, #ffffff);
-        }
-        .question:nth-child(even) {
-            border-left-color: #2ecc71;
-            background: linear-gradient(to right, #f9fff9, #ffffff);
-        }
-        .question:nth-child(3n) {
-            border-left-color: #f39c12;
-            background: linear-gradient(to right, #fffbf0, #ffffff);
-        }
-        .question:nth-child(4n) {
-            border-left-color: #9b59b6;
-            background: linear-gradient(to right, #fbf0ff, #ffffff);
-        }
-        .question:nth-child(5n) {
-            border-left-color: #1abc9c;
-            background: linear-gradient(to right, #f0fffc, #ffffff);
-        }
-        .question.high-level {
-            border-left-color: #e74c3c;
-            background: linear-gradient(to right, #fff5f5, #ffffff);
-            border: 2px dashed #e74c3c;
-        }
-        .question.high-level::before {
-            content: "✨ 高思维题 ✨";
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #e74c3c;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .question-number {
-            font-weight: bold;
-            color: #3498db;
-            margin-bottom: 10px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-        }
-        .question-number::before {
-            content: "🔢";
-            margin-right: 8px;
-            font-size: 20px;
-        }
-        .question-text {
-            margin-bottom: 15px;
-            font-size: 20px;
-            line-height: 1.5;
-        }
-        .options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .option {
-            flex: 1 0 calc(33.333% - 12px);
-            min-width: 100px;
-            padding: 12px 15px;
-            background: linear-gradient(to bottom, #e8f4fc, #d1ebff);
-            border: 3px solid #3498db;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s;
-            font-size: 18px;
-            font-weight: bold;
-            color: #2c3e50;
-            box-shadow: 0 4px 0 #2980b9;
-        }
-        .option:hover {
-            background: linear-gradient(to bottom, #d1ebff, #a8d8ff);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 0 #2980b9;
-        }
-        .option:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #2980b9;
-        }
-        .option.correct {
-            background: linear-gradient(to bottom, #d4edda, #c3e6cb);
-            border-color: #28a745;
-            color: #155724;
-            box-shadow: 0 4px 0 #1e7e34;
-        }
-        .option.incorrect {
-            background: linear-gradient(to bottom, #f8d7da, #f5c6cb);
-            border-color: #dc3545;
-            color: #721c24;
-            box-shadow: 0 4px 0 #c82333;
-        }
-        .feedback {
-            margin-top: 15px;
-            font-weight: bold;
-            min-height: 28px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-        }
-        .feedback.correct {
-            color: #28a745;
-        }
-        .feedback.correct::before {
-            content: "✅ ";
-            margin-right: 8px;
-        }
-        .feedback.incorrect {
-            color: #dc3545;
-        }
-        .feedback.incorrect::before {
-            content: "❌ ";
-            margin-right: 8px;
-        }
-        .pagination {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-        }
-        button {
-            padding: 12px 25px;
-            background: linear-gradient(to bottom, #3498db, #2980b9);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 0 #1f618d;
-            font-weight: bold;
-        }
-        button:hover {
-            background: linear-gradient(to bottom, #2980b9, #2471a3);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 0 #1f618d;
-        }
-        button:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #1f618d;
-        }
-        button:disabled {
-            background: linear-gradient(to bottom, #bdc3c7, #95a5a6);
-            box-shadow: 0 4px 0 #7f8c8d;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .progress {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 20px;
-            color: #2c3e50;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 10px;
-            border-radius: 50px;
-            font-weight: bold;
-            border: 2px dashed #3498db;
-        }
-        .summary {
-            text-align: center;
-            margin-top: 30px;
-            padding: 30px;
-            background: linear-gradient(135deg, #e8f4fc, #d1ebff);
-            border-radius: 20px;
-            display: none;
-            border: 5px solid #ffcc00;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        }
-        .summary h2 {
-            color: #2c3e50;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        .score {
-            font-size: 36px;
-            font-weight: bold;
-            color: #e74c3c;
-            text-shadow: 2px 2px 0 #ffcc00;
-            background: white;
-            padding: 10px 30px;
-            border-radius: 50px;
-            display: inline-block;
-            margin: 10px 0;
-            border: 3px solid #3498db;
-        }
-        .decoration {
-            position: absolute;
-            z-index: -1;
-        }
-        .decoration-1 {
-            top: 10%;
-            left: 5%;
-            font-size: 40px;
-            animation: float 6s ease-in-out infinite;
-        }
-        .decoration-2 {
-            top: 20%;
-            right: 5%;
-            font-size: 50px;
-            animation: float 8s ease-in-out infinite;
-        }
-        .decoration-3 {
-            bottom: 15%;
-            left: 8%;
-            font-size: 35px;
-            animation: float 7s ease-in-out infinite;
-        }
-        .decoration-4 {
-            bottom: 25%;
-            right: 10%;
-            font-size: 45px;
-            animation: float 9s ease-in-out infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一年级数学加减法练习题</title>
+<style>
+* {
+    box-sizing: border-box;
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', 'Microsoft YaHei', sans-serif;
+}
+body {
+    margin: 0;
+    padding: 20px;
+    color: #333;
+    min-height: 100vh;
+    background: url('https://cdn.wallpapersafari.com/42/73/mLCejp.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.92);
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    border: 8px solid #ffcc00;
+    position: relative;
+    overflow: hidden;
+}
+h1 {
+    text-align: center;
+    color: #e74c3c;
+    margin-bottom: 30px;
+    font-size: 32px;
+    background: linear-gradient(to right, #e74c3c, #3498db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+.page {
+    display: none;
+}
+.page.active {
+    display: block;
+}
+.question {
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-left: 8px solid #3498db;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: relative;
+}
+.question:nth-child(odd) {
+    border-left-color: #e74c3c;
+    background: linear-gradient(to right, #fff9f9, #ffffff);
+}
+.question:nth-child(even) {
+    border-left-color: #2ecc71;
+    background: linear-gradient(to right, #f9fff9, #ffffff);
+}
+.question.high-level {
+    border-left-color: #e74c3c;
+    background: linear-gradient(to right, #fff5f5, #ffffff);
+    border: 2px dashed #e74c3c;
+}
+.question.high-level::before {
+    content: "✨ 高思维题 ✨";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.question-number {
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+.question-number::before {
+    content: "🔢";
+    margin-right: 8px;
+    font-size: 20px;
+}
+.question-text {
+    margin-bottom: 15px;
+    font-size: 20px;
+    line-height: 1.5;
+}
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.option {
+    flex: 1 0 calc(33.333% - 12px);
+    min-width: 100px;
+    padding: 12px 15px;
+    background: linear-gradient(to bottom, #e8f4fc, #d1ebff);
+    border: 3px solid #3498db;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+    box-shadow: 0 4px 0 #2980b9;
+}
+.option:hover {
+    background: linear-gradient(to bottom, #d1ebff, #a8d8ff);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0 #2980b9;
+}
+.option:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #2980b9;
+}
+.option.correct {
+    background: linear-gradient(to bottom, #d4edda, #c3e6cb);
+    border-color: #28a745;
+    color: #155724;
+    box-shadow: 0 4px 0 #1e7e34;
+}
+.option.incorrect {
+    background: linear-gradient(to bottom, #f8d7da, #f5c6cb);
+    border-color: #dc3545;
+    color: #721c24;
+    box-shadow: 0 4px 0 #c82333;
+}
+.feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 28px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+.feedback.correct {
+    color: #28a745;
+}
+.feedback.correct::before {
+    content: "✅ ";
+    margin-right: 8px;
+}
+.feedback.incorrect {
+    color: #dc3545;
+}
+.feedback.incorrect::before {
+    content: "❌ ";
+    margin-right: 8px;
+}
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+button {
+    padding: 12px 25px;
+    background: linear-gradient(to bottom, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 0 #1f618d;
+    font-weight: bold;
+}
+button:hover {
+    background: linear-gradient(to bottom, #2980b9, #2471a3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0 #1f618d;
+}
+button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #1f618d;
+}
+button:disabled {
+    background: linear-gradient(to bottom, #bdc3c7, #95a5a6);
+    box-shadow: 0 4px 0 #7f8c8d;
+    cursor: not-allowed;
+    transform: none;
+}
+.progress {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 20px;
+    color: #2c3e50;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 50px;
+    font-weight: bold;
+    border: 2px dashed #3498db;
+}
+.summary {
+    text-align: center;
+    margin-top: 30px;
+    padding: 30px;
+    background: linear-gradient(135deg, #e8f4fc, #d1ebff);
+    border-radius: 20px;
+    display: none;
+    border: 5px solid #ffcc00;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+.summary h2 {
+    color: #2c3e50;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+.score {
+    font-size: 36px;
+    font-weight: bold;
+    color: #e74c3c;
+    text-shadow: 2px 2px 0 #ffcc00;
+    background: white;
+    padding: 10px 30px;
+    border-radius: 50px;
+    display: inline-block;
+    margin: 10px 0;
+    border: 3px solid #3498db;
+}
+</style>
 </head>
 <body>
-    <div class="decoration decoration-1">🧮</div>
-    <div class="decoration decoration-2">📚</div>
-    <div class="decoration decoration-3">✏️</div>
-    <div class="decoration decoration-4">🔢</div>
-    
-    <div class="container">
-        <h1>一年级数学加减法练习题</h1>
-        
-        <div class="progress">第 <span id="current-page">1</span> 页 / 共 6 页</div>
-        
-        <!-- 第1页 -->
+<div class="container">
+<h1>一年级数学加减法练习题</h1>
+<div class="progress">第 <span id="current-page">1</span> 页 / 共 6 页</div>
+
+<!-- 页面内容（30道题） -->
+<!-- 为简洁起见，只贴示例，第1页示例，剩余页同逻辑，可在原文件中完整保留 -->
+<!-- 第1页 -->
         <div class="page active" id="page1">
             <div class="question">
                 <div class="question-number">问题 1</div>
@@ -662,113 +585,102 @@
                 <div class="feedback"></div>
             </div>
         </div>
-        
-        <div class="pagination">
-            <button id="prev-btn" disabled>上一页</button>
-            <button id="next-btn">下一页</button>
-        </div>
-        
-        <div class="summary" id="summary">
-            <h2>练习完成！</h2>
-            <p>你的得分是：<span class="score" id="score">0</span> / 30</p>
-            <p>继续努力，数学小天才！</p>
-        </div>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const pages = document.querySelectorAll('.page');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const currentPageSpan = document.getElementById('current-page');
-            const summary = document.getElementById('summary');
-            const scoreSpan = document.getElementById('score');
-            
-            let currentPage = 0;
-            let score = 0;
-            
-            initializeQuestions();
-            updatePageDisplay();
-            
-            function updatePageDisplay() {
-                pages.forEach((page, index) => {
-                    page.classList.toggle('active', index === currentPage);
-                });
-                
-                currentPageSpan.textContent = currentPage + 1;
-                prevBtn.disabled = currentPage === 0;
-                nextBtn.disabled = currentPage === pages.length - 1 ? false : false;
-                
-                nextBtn.textContent = currentPage === pages.length - 1 ? '完成' : '下一页';
-            }
-            
-            function initializeQuestions() {
-                const questions = document.querySelectorAll('.question');
-                
-                questions.forEach(question => {
-                    const options = question.querySelectorAll('.option');
-                    const feedback = question.querySelector('.feedback');
-                    let answered = false; // 题目是否已回答
-                    
-                    options.forEach(option => {
-                        option.addEventListener('click', function() {
-                            if (answered) return; // 只允许点击一次
-                            answered = true;
-                            
-                            const isCorrect = this.getAttribute('data-correct') === 'true';
-                            
-                            if (isCorrect) {
-                                this.classList.add('correct');
-                                feedback.textContent = '正确！';
-                                feedback.classList.add('correct');
-                                score++;
-                            } else {
-                                this.classList.add('incorrect');
-                                feedback.textContent = '错误！正确答案是: ' + getCorrectAnswer(options);
-                                feedback.classList.add('incorrect');
-                                // 显示正确答案
-                                options.forEach(opt => {
-                                    if (opt.getAttribute('data-correct') === 'true') {
-                                        opt.classList.add('correct');
-                                    }
-                                });
+<div class="pagination">
+<button id="prev-btn" disabled>上一页</button>
+<button id="next-btn">下一页</button>
+</div>
+
+<div class="summary" id="summary">
+<h2>练习完成！</h2>
+<p>你的得分是：<span class="score" id="score">0</span> / 30</p>
+<p>继续努力，数学小天才！</p>
+</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const pages = document.querySelectorAll('.page');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const currentPageSpan = document.getElementById('current-page');
+    const summary = document.getElementById('summary');
+    const scoreSpan = document.getElementById('score');
+    
+    let currentPage = 0;
+    let score = 0;
+    
+    initializeQuestions();
+    updatePageDisplay();
+
+    function updatePageDisplay() {
+        pages.forEach((page, index) => {
+            page.classList.toggle('active', index === currentPage);
+        });
+        currentPageSpan.textContent = currentPage + 1;
+        prevBtn.disabled = currentPage === 0;
+        nextBtn.textContent = currentPage === pages.length - 1 ? '完成' : '下一页';
+    }
+
+    function initializeQuestions() {
+        const questions = document.querySelectorAll('.question');
+        questions.forEach(question => {
+            const options = question.querySelectorAll('.option');
+            const feedback = question.querySelector('.feedback');
+            let answered = false;
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    if (answered) return; // 每题只能点击一次
+                    answered = true;
+                    const isCorrect = this.getAttribute('data-correct') === 'true';
+                    if (isCorrect) {
+                        this.classList.add('correct');
+                        feedback.textContent = '正确！';
+                        feedback.classList.add('correct');
+                        score++;
+                    } else {
+                        this.classList.add('incorrect');
+                        feedback.textContent = '正确答案是: ' + getCorrectAnswer(options);
+                        feedback.classList.add('incorrect');
+                        options.forEach(opt => {
+                            if (opt.getAttribute('data-correct') === 'true') {
+                                opt.classList.add('correct');
                             }
-                            
-                            // 禁用所有选项
-                            options.forEach(opt => opt.style.pointerEvents = 'none');
                         });
-                    });
-                });
-            }
-            
-            function getCorrectAnswer(options) {
-                for (let option of options) {
-                    if (option.getAttribute('data-correct') === 'true') {
-                        return option.textContent;
                     }
-                }
-                return '';
-            }
-            
-            prevBtn.addEventListener('click', function() {
-                if (currentPage > 0) {
-                    currentPage--;
-                    updatePageDisplay();
-                }
-            });
-            
-            nextBtn.addEventListener('click', function() {
-                if (currentPage < pages.length - 1) {
-                    currentPage++;
-                    updatePageDisplay();
-                } else {
-                    summary.style.display = 'block';
-                    scoreSpan.textContent = score;
-                    nextBtn.disabled = true;
-                    prevBtn.disabled = true;
-                }
+                    // 禁用所有选项
+                    options.forEach(opt => { opt.style.pointerEvents = 'none'; });
+                });
             });
         });
-    </script>
+    }
+
+    function getCorrectAnswer(options) {
+        for (let option of options) {
+            if (option.getAttribute('data-correct') === 'true') return option.textContent;
+        }
+        return '';
+    }
+
+    prevBtn.addEventListener('click', function() {
+        if (currentPage > 0) {
+            currentPage--;
+            updatePageDisplay();
+        }
+    });
+
+    nextBtn.addEventListener('click', function() {
+        if (currentPage < pages.length - 1) {
+            currentPage++;
+            updatePageDisplay();
+        } else {
+            summary.style.display = 'block';
+            scoreSpan.textContent = score;
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+        }
+    });
+});
+</script>
 </body>
 </html>
