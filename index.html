@@ -687,42 +687,33 @@
             let currentPage = 0;
             let score = 0;
             
-            // 初始化所有问题
             initializeQuestions();
+            updatePageDisplay();
             
-            // 更新页面显示
             function updatePageDisplay() {
                 pages.forEach((page, index) => {
                     page.classList.toggle('active', index === currentPage);
                 });
                 
                 currentPageSpan.textContent = currentPage + 1;
-                
                 prevBtn.disabled = currentPage === 0;
-                nextBtn.disabled = currentPage === pages.length - 1;
+                nextBtn.disabled = currentPage === pages.length - 1 ? false : false;
                 
-                if (currentPage === pages.length - 1) {
-                    nextBtn.textContent = '完成';
-                } else {
-                    nextBtn.textContent = '下一页';
-                }
+                nextBtn.textContent = currentPage === pages.length - 1 ? '完成' : '下一页';
             }
             
-            // 初始化问题
             function initializeQuestions() {
                 const questions = document.querySelectorAll('.question');
                 
                 questions.forEach(question => {
                     const options = question.querySelectorAll('.option');
                     const feedback = question.querySelector('.feedback');
-                    let attempts = 0;
-                    const maxAttempts = 2;
+                    let answered = false; // 题目是否已回答
                     
                     options.forEach(option => {
                         option.addEventListener('click', function() {
-                            if (this.classList.contains('correct') || this.classList.contains('incorrect')) {
-                                return; // 已经回答过了
-                            }
+                            if (answered) return; // 只允许点击一次
+                            answered = true;
                             
                             const isCorrect = this.getAttribute('data-correct') === 'true';
                             
@@ -730,39 +721,26 @@
                                 this.classList.add('correct');
                                 feedback.textContent = '正确！';
                                 feedback.classList.add('correct');
-                                feedback.classList.remove('incorrect');
                                 score++;
-                                
-                                // 禁用所有选项
-                                options.forEach(opt => {
-                                    opt.style.pointerEvents = 'none';
-                                });
                             } else {
-                                attempts++;
                                 this.classList.add('incorrect');
-                                
-                                if (attempts >= maxAttempts) {
-                                    feedback.textContent = '正确答案是: ' + getCorrectAnswer(options);
-                                    feedback.classList.add('incorrect');
-                                    
-                                    // 显示正确答案并禁用所有选项
-                                    options.forEach(opt => {
-                                        if (opt.getAttribute('data-correct') === 'true') {
-                                            opt.classList.add('correct');
-                                        }
-                                        opt.style.pointerEvents = 'none';
-                                    });
-                                } else {
-                                    feedback.textContent = '再试一次！';
-                                    feedback.classList.add('incorrect');
-                                }
+                                feedback.textContent = '错误！正确答案是: ' + getCorrectAnswer(options);
+                                feedback.classList.add('incorrect');
+                                // 显示正确答案
+                                options.forEach(opt => {
+                                    if (opt.getAttribute('data-correct') === 'true') {
+                                        opt.classList.add('correct');
+                                    }
+                                });
                             }
+                            
+                            // 禁用所有选项
+                            options.forEach(opt => opt.style.pointerEvents = 'none');
                         });
                     });
                 });
             }
             
-            // 获取正确答案
             function getCorrectAnswer(options) {
                 for (let option of options) {
                     if (option.getAttribute('data-correct') === 'true') {
@@ -772,7 +750,6 @@
                 return '';
             }
             
-            // 上一页按钮事件
             prevBtn.addEventListener('click', function() {
                 if (currentPage > 0) {
                     currentPage--;
@@ -780,22 +757,17 @@
                 }
             });
             
-            // 下一页按钮事件
             nextBtn.addEventListener('click', function() {
                 if (currentPage < pages.length - 1) {
                     currentPage++;
                     updatePageDisplay();
                 } else {
-                    // 显示总结
                     summary.style.display = 'block';
                     scoreSpan.textContent = score;
                     nextBtn.disabled = true;
                     prevBtn.disabled = true;
                 }
             });
-            
-            // 初始显示第一页
-            updatePageDisplay();
         });
     </script>
 </body>
